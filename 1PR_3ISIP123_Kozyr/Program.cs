@@ -109,8 +109,19 @@ void SellProduct()
     Console.WriteLine("Введите ID товара для продажи: ");
     int targetId = Convert.ToInt32(Console.ReadLine());
     Console.WriteLine("Ведите кол-во единиц для продажи: ");
-    int AddCount = Convert.ToInt32(Console.ReadLine());
+    int SellCount = Convert.ToInt32(Console.ReadLine());
     Product productToSell = products.FirstOrDefault(p => p.ProductID == targetId);
+    if (productToSell != null) 
+    { 
+        if (productToSell.Count < SellCount)
+        {
+            Console.WriteLine($"На складе меньше, чем {SellCount} единиц данного товара");
+        }
+        else
+        {
+            productToSell.Count = productToSell.Count - SellCount;
+        }
+    }
 }
 void SearchProduct()
 {
