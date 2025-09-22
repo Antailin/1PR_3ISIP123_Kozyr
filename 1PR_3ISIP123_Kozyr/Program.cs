@@ -7,9 +7,10 @@ Console.WriteLine("2. Удалить товар");
 Console.WriteLine("3. Заказать поставку товара");
 Console.WriteLine("4. Продать товар");
 Console.WriteLine("5. Поиск товаров");
-Console.WriteLine("6. Выход");
+Console.WriteLine("6. Показать склад");
+Console.WriteLine("7. Выход");
 int choice = Convert.ToInt32(Console.ReadLine());
-while (choice != 6)
+while (choice != 7)
 {
     switch (choice)
     {
@@ -28,7 +29,19 @@ while (choice != 6)
         case 5:
             SearchProduct();
             break;
+        case 6:
+            DisplayAllProducts();
+            break;
     }
+    Console.WriteLine("\nВыберите действие: ");
+    Console.WriteLine("1. Добавить товар");
+    Console.WriteLine("2. Удалить товар");
+    Console.WriteLine("3. Заказать поставку товара");
+    Console.WriteLine("4. Продать товар");
+    Console.WriteLine("5. Поиск товаров");
+    Console.WriteLine("6. Показать склад");
+    Console.WriteLine("7. Выход");
+    choice = Convert.ToInt32(Console.ReadLine());
 }
 
 void AddProduct()
@@ -45,7 +58,7 @@ void AddProduct()
     Console.WriteLine("Есть ли товар на складе: ");
     string availability = Console.ReadLine();
 
-    Console.WriteLine($"Выберите категорию: 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
+    Console.WriteLine($"Выберите категорию:\n 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
 
     int categoria = int.Parse(Console.ReadLine());
     Categ category=Categ.Неопр;
@@ -91,6 +104,12 @@ void RemoveProduct()
 
 void BuyProduct()
 {
+    if (products.Count == 0)
+    {
+        Console.WriteLine("Список товаров пуст!");
+        return;
+    }
+
     Console.WriteLine("Введите ID товара для закупки: ");
     int targetId = Convert.ToInt32(Console.ReadLine());
     Console.WriteLine("Ведите кол-во единиц для закупа: ");
@@ -106,6 +125,12 @@ void BuyProduct()
 
 void SellProduct()
 {
+    if (products.Count == 0)
+    {
+        Console.WriteLine("Список товаров пуст!");
+        return;
+    }
+
     Console.WriteLine("Введите ID товара для продажи: ");
     int targetId = Convert.ToInt32(Console.ReadLine());
     Console.WriteLine("Ведите кол-во единиц для продажи: ");
@@ -137,6 +162,21 @@ void SearchProduct()
     Console.WriteLine("3. Поиск по ID");
 
     int searchChoice = Convert.ToInt32(Console.ReadLine());
+}
+
+void DisplayAllProducts()
+{
+    if (products.Count == 0)
+    {
+        Console.WriteLine("Список товаров пуст!");
+        return;
+    }
+
+    Console.WriteLine("\nСписок товаров:");
+    foreach (Product product in products)
+    {
+        product.PrintInfo();
+    }
 }
 public class Product
 {
