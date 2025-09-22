@@ -1,7 +1,7 @@
 ﻿using System;
 List<Product> products = new List<Product>();
 int id = 1;
-Console.Write("\nВыберите действие: ");
+Console.WriteLine("\nВыберите действие: ");
 Console.WriteLine("1. Добавить товар");
 Console.WriteLine("2. Удалить товар");
 Console.WriteLine("3. Заказать поставку товара");
@@ -33,19 +33,19 @@ while (choice != 6)
 
 void AddProduct()
 { 
-    Console.Write("Введите название: ");
+    Console.WriteLine("Введите название: ");
     string name = Console.ReadLine();
 
-    Console.Write("Введите цену: ");
+    Console.WriteLine("Введите цену: ");
     double price = double.Parse(Console.ReadLine());
 
-    Console.Write("Введите количество: ");
+    Console.WriteLine("Введите количество: ");
     int count = int.Parse(Console.ReadLine());
 
-    Console.Write("Есть ли товар на складе: ");
+    Console.WriteLine("Есть ли товар на складе: ");
     string availability = Console.ReadLine();
 
-    Console.Write($"Выберите категорию: 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
+    Console.WriteLine($"Выберите категорию: 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
 
     int categoria = int.Parse(Console.ReadLine());
     Categ category=Categ.Неопр;
@@ -67,8 +67,66 @@ void AddProduct()
     id++;
 }
 
+void RemoveProduct()
+{
+    if (products.Count == 0)
+    {
+        Console.WriteLine("Список товаров пуст!");
+        return;
+    }
+
+    Console.WriteLine("Введите ID товара для удаления: ");
+    int targetId = Convert.ToInt32(Console.ReadLine());
+    Product productToRemove = products.FirstOrDefault(p => p.ProductID == targetId);
+    if (productToRemove != null)
+    {
+        products.Remove(productToRemove);
+        Console.WriteLine($"Товар с ID {targetId} успешно удален!");
+    }
+    else
+    {
+        Console.WriteLine($"Товар с ID {targetId} не найден!");
+    }
+}
+
+void BuyProduct()
+{
+    Console.WriteLine("Введите ID товара для закупки: ");
+    int targetId = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Ведите кол-во единиц для закупа: ");
+    int AddCount = Convert.ToInt32(Console.ReadLine());
+    Product productToBuy = products.FirstOrDefault(p => p.ProductID == targetId);
+    if (productToBuy != null)
+    {
+        productToBuy.Count = productToBuy.Count + AddCount;
+    }
+
+}
 
 
+void SellProduct()
+{
+    Console.WriteLine("Введите ID товара для продажи: ");
+    int targetId = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Ведите кол-во единиц для продажи: ");
+    int AddCount = Convert.ToInt32(Console.ReadLine());
+    Product productToSell = products.FirstOrDefault(p => p.ProductID == targetId);
+}
+void SearchProduct()
+{
+    if (products.Count == 0)
+    {
+        Console.WriteLine("Список товаров пуст!");
+        return;
+    }
+
+    Console.WriteLine("\nВыберите критерий поиска:");
+    Console.WriteLine("1. Поиск по названию");
+    Console.WriteLine("2. Поиск по категории");
+    Console.WriteLine("3. Поиск по ID");
+
+    int searchChoice = Convert.ToInt32(Console.ReadLine());
+}
 public class Product
 {
     public int ProductID { get; set; }
