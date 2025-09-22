@@ -55,8 +55,7 @@ void AddProduct()
     Console.WriteLine("Введите количество: ");
     int count = int.Parse(Console.ReadLine());
 
-    Console.WriteLine("Есть ли товар на складе: ");
-    string availability = Console.ReadLine();
+
 
     Console.WriteLine($"Выберите категорию:\n 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
 
@@ -75,7 +74,7 @@ void AddProduct()
             break;
     }
 
-    products.Add(new Product(id, name, price, count, availability, category));
+    products.Add(new Product(id, name, price, count, category));
     Console.WriteLine("Товар успешно добавлен!");
     id++;
 }
@@ -119,7 +118,7 @@ void BuyProduct()
     {
         productToBuy.Count = productToBuy.Count + AddCount;
     }
-
+    Console.WriteLine($"Закупка прошла успешно! На складе теперь находится {productToBuy.Count} единиц товара <{productToBuy.Name}>");
 }
 
 
@@ -146,6 +145,7 @@ void SellProduct()
         {
             productToSell.Count = productToSell.Count - SellCount;
         }
+        Console.WriteLine($"Продажа прошла успешно! На складе теперь находится {productToSell.Count} единиц товара <{productToSell.Name}>");
     }
 }
 void SearchProduct()
@@ -162,6 +162,52 @@ void SearchProduct()
     Console.WriteLine("3. Поиск по ID");
 
     int searchChoice = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Результат поиска:");
+    switch (searchChoice)
+    {
+        case 1:
+            Console.WriteLine("Введите название товара для поиска: ");
+            string targetName = Console.ReadLine();
+            Product productToFindName = products.FirstOrDefault(p => p.Name == targetName);
+            if (productToFindName != null)
+            {
+                productToFindName.PrintInfo();
+            }
+            break;
+        case 2:
+            Console.WriteLine($"Выберите категорию товара для поиска: \n 1. {Categ.Транспорт}\n 2. {Categ.Спорт}\n 3. {Categ.Одежда}");
+            int categatake = Convert.ToInt32(Console.ReadLine());
+            Categ G = Categ.Неопр;
+            switch (categatake)
+            {
+                case 1:
+                    G = Categ.Транспорт;
+                    break;
+                case 2:
+                    G = Categ.Спорт;
+                    break;
+                case 3:
+                    G = Categ.Одежда;
+                    break;
+            }
+            for (int i = 0; i < products.Count ; i++)
+            {
+                if (products[i].Category == G)
+                {
+
+                }
+            }
+            break;
+        case 3:
+            Console.WriteLine("Введите ID товара для поиска: ");
+            int targetId = Convert.ToInt32(Console.ReadLine());
+            Product productToFindId = products.FirstOrDefault(p => p.ProductID == targetId);
+            if (productToFindId != null)
+            {
+                productToFindId.PrintInfo();
+            }
+                break;
+    }
 }
 
 void DisplayAllProducts()
@@ -184,22 +230,29 @@ public class Product
     public string Name { get; set; }
     public double Price { get; set; }
     public int Count { get; set; }
-    public string Availability {  get; set; }
-    static public Categ Category;
+    public bool Availability = true;
+     public Categ Category;
 
-    public Product(int ProductId, string Name, double Price, int Count, string Availability, Categ category)
+    public Product(int ProductId, string Name, double Price, int Count, Categ category)
     {
         this.ProductID = ProductId;
         this.Name = Name;
         this.Price = Price;
         this.Count = Count;
-        this.Availability = Availability;
         Category = category;
     }
 
     public void PrintInfo()
     {
-        Console.WriteLine($"ID: {ProductID}");
+        if (Count > 0)
+        {
+            Availability = true;
+        }
+        else
+        {
+            Availability = false;
+        }
+            Console.WriteLine($"ID: {ProductID}");
         Console.WriteLine($"Название: {Name}");
         Console.WriteLine($"Цена: {Price:C}");
         Console.WriteLine($"Количество: {Count}");
