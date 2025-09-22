@@ -1,5 +1,6 @@
 ﻿using System;
 List<Product> products = new List<Product>();
+Stack<Sale> salesHistory = new Stack<Sale>();
 int id = 1;
 Console.WriteLine("\nВыберите действие: ");
 Console.WriteLine("1. Добавить товар");
@@ -8,9 +9,11 @@ Console.WriteLine("3. Заказать поставку товара");
 Console.WriteLine("4. Продать товар");
 Console.WriteLine("5. Поиск товаров");
 Console.WriteLine("6. Показать склад");
-Console.WriteLine("7. Выход");
+Console.WriteLine("7. История продаж");
+Console.WriteLine("8. Отменить последнюю продажу");
+Console.WriteLine("9. Выход");
 int choice = Convert.ToInt32(Console.ReadLine());
-while (choice != 7)
+while (choice != 9)
 {
     switch (choice)
     {
@@ -32,6 +35,12 @@ while (choice != 7)
         case 6:
             DisplayAllProducts();
             break;
+        case 7:
+            DisplaySales();
+            break;
+        case 8:
+            UndoLastSale();
+            break;
     }
     Console.WriteLine("\nВыберите действие: ");
     Console.WriteLine("1. Добавить товар");
@@ -40,7 +49,9 @@ while (choice != 7)
     Console.WriteLine("4. Продать товар");
     Console.WriteLine("5. Поиск товаров");
     Console.WriteLine("6. Показать склад");
-    Console.WriteLine("7. Выход");
+    Console.WriteLine("7. История продаж");
+    Console.WriteLine("8. Отменить последнюю продажу");
+    Console.WriteLine("9. Выход");
     choice = Convert.ToInt32(Console.ReadLine());
 }
 
@@ -144,8 +155,12 @@ void SellProduct()
         else
         {
             productToSell.Count = productToSell.Count - SellCount;
+            double totalAmount = productToSell.Price * SellCount;
+            Sale sale = new Sale(targetId, productToSell.Name, SellCount, totalAmount);
+            salesHistory.Push(sale);
+            Console.WriteLine($"Продажа прошла успешно! На складе теперь находится {productToSell.Count} единиц товара <{productToSell.Name}>");
         }
-        Console.WriteLine($"Продажа прошла успешно! На складе теперь находится {productToSell.Count} единиц товара <{productToSell.Name}>");
+        
     }
 }
 void SearchProduct()
@@ -194,7 +209,7 @@ void SearchProduct()
             {
                 if (products[i].Category == G)
                 {
-
+                    products[i].PrintInfo();
                 }
             }
             break;
@@ -222,6 +237,45 @@ void DisplayAllProducts()
     foreach (Product product in products)
     {
         product.PrintInfo();
+    }
+}
+
+void DisplaySales()
+{
+    if (salesHistory.Count == 0)
+    {
+        Console.WriteLine("История продаж пуста!");
+        return;
+    }
+    double totalRevenue = 0;
+    int totalItemsSold = 0;
+    var salesArray = salesHistory.ToArray();
+    for (int i = salesArray.Length - 1; i >= 0; i--)
+    {
+        Sale sale = salesArray[i];
+        Console.WriteLine($"Товар: {sale.ProductName} (ID: {sale.ProductID})");
+        Console.WriteLine($"Количество: {sale.Quantity} шт.");
+        Console.WriteLine($"Сумма: {sale.TotalAmount:C}");
+
+        totalRevenue += sale.TotalAmount;
+        totalItemsSold += sale.Quantity;
+    }
+}
+
+void UndoLastSale()
+{
+    if (salesHistory.Count == 0)
+    {
+        Console.WriteLine("История продаж пуста!");
+        return;
+    }
+    Sale lastSale = salesHistory.Pop();
+    Product productToRestore = products.FirstOrDefault(p => p.ProductID == lastSale.ProductID);
+
+    if (productToRestore != null)
+    {
+        productToRestore.Count += lastSale.Quantity;
+        Console.WriteLine($"Продажа отменена! Товар {lastSale.ProductName} в количестве {lastSale.Quantity} шт. возвращен на склад.");
     }
 }
 public class Product
@@ -258,6 +312,21 @@ public class Product
         Console.WriteLine($"Количество: {Count}");
         Console.WriteLine($"Остался ли товар: {Availability}");
         Console.WriteLine($"Категория: {Category}");
+    }
+}
+public class Sale
+{
+    public int ProductID { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+    public double TotalAmount { get; set; }
+
+    public Sale(int productId, string productName, int quantity, double totalAmount)
+    {
+        ProductID = productId;
+        ProductName = productName;
+        Quantity = quantity;
+        TotalAmount = totalAmount;
     }
 }
 public enum Categ
