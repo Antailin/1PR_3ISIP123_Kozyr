@@ -1,73 +1,115 @@
 ﻿using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 List<Text> texts = new List<Text>();
-int max = -1;
-int min = 999999;
-string input = "";
-Console.WriteLine("Введите текст(минимум 100 символов):");
-input  = Console.ReadLine();
-while (input.Length < 100)
-{
-    LongChek();
-}
 int id = 1;
- void LongChek()
+bool a = true;
+while (a == true)
 {
-    if (input.Length< 100)
+    Console.WriteLine("Выберите действие:\n1 - Ввести новый текст\n2 - Показать статистику по прошлым текстам\n3 - Выйти");
+    int choice = Convert.ToInt32(Console.ReadLine());
+    switch (choice)
+    {
+        case 1:
+            WriteNewText();
+            break;
+        case 2:
+            ShowStatistic();
+            break;
+        case 3:
+            a = false;
+            break;
+    }
+}
+void WriteNewText()
+{
+    string input = ChekInput();
+    if (input == "Error")
+    {
+        Console.WriteLine("Слишком мало символов");
+    }
+    else
+    {
+        Text TextStatistic = AnalyzeText(input);
+        texts.Add(TextStatistic);
+        TextStatistic.PrintInfo();
+        id++;
+    }
+
+}
+static string ChekInput()
+{
+    Console.WriteLine("Введите текст (минимум 100 символов):");
+    string input = Console.ReadLine();
+    if (input.Length < 100)
     {
         Console.WriteLine("Слишком мало символов!");
+        return "Error";
     }
-    Console.WriteLine("Введите текст(минимум 100 символов):");
-    input = Console.ReadLine();
-    
-}
-void FindAll()
-{
-
-    string shortest="";
-    string longest="";
-    string[] words = input.Split(new char[] { ' ' });
-    int WordsCount = words.Length;
-    for(int i = 0; i < words.Length; i++)
-    {   
-        if (words[i].Length < min)
-        {
-            shortest = words[i];
-        }
-        if (words[i].Length > max)
-        {
-            longest = words[i];
-        }
-
-    }
-    string MostShort = shortest;
-    string MostLong = longest;
-    string[] sentences = input.Split(new char[] { '.' });
-    int SentencesCount = sentences.Length;
-    string[] volwels = { "а", "у", "о", "и", "э", "ы", "я", "ю", "е", "ё"};
-    string[] consonants = { "б", "в", "г", "д", "ж", "з", "й", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ" };
-    int VowelCount = 0;
-    int ConsonantsCount = 0;
-    for (int i = 0;i < input.Length;i++)
+    else
     {
-        for (int j = 0; j < volwels.Length; j++)
+        return input;
+    }
+}
+Text AnalyzeText(string input)
+{
+    string[] words = input.Split(new char[] { ' ', ',', '.', '!', '?', ';', ':', '-', '\n', '\r', '\t' });
+    int wordsCount = words.Length;
+    string shortest = "";
+    string longest = "";
+    if (words.Length > 0)
+    {
+        shortest = CleanWord(words[0]);
+        longest = CleanWord(words[0]);
+
+        for (int i = 1; i < words.Length; i++)
         {
-            if (input[i] == volwels[j])
-            {
-                VowelCount++;
-            }
-        }
-        for (int j = 0;j < consonants.Length; j++)
-        {
-            if (input[i] == consonants[j])
-            {
-                ConsonantsCount++;
-            }
+            string cleanWord = CleanWord(words[i]);
+            if (cleanWord.Length == 0) continue;
+
+            if (cleanWord.Length < shortest.Length)
+                shortest = cleanWord;
+            if (cleanWord.Length > longest.Length)
+                longest = cleanWord;
         }
     }
-    texts.Add(new Text(id,WordsCount, MostShort, SentencesCount, VowelCount, ConsonantsCount, MostLong));
+
+    string[] sentences = input.Split(new char[] { '.', '!', '?' });
+    int sentencesCount = sentences.Length;
+    int vowelsCount = 0;
+    int consonantsCount = 0;
+    Dictionary<char, int> lettersFrequency = new Dictionary<char, int>();
+
+    foreach (char c in input.ToLower())
+    {
+        if (char.IsLetter(c))
+        {
+            if (lettersFrequency.ContainsKey(c))
+                lettersFrequency[c]++;
+            else
+                lettersFrequency[c] = 1;
+            if (IsVowel(c))
+                vowelsCount++;
+            else
+                consonantsCount++;
+        }
+    }
+
+    // ДОБАВЛЕНО: возврат объекта Text со всеми параметрами
+    return new Text(id, wordsCount, shortest, sentencesCount, vowelsCount, consonantsCount, longest, lettersFrequency);
 }
-FindAll();
+static string CleanWord(string word)
+{
+    string cleanWord = "";
+    foreach (char c in word)
+    {
+        if (char.IsLetter(c))
+        {
+            cleanWord += c;
+        }
+    }
+    return cleanWord;
+}
+
 public class Text
 {
     public int TextID { get; set; }
