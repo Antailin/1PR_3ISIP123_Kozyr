@@ -252,7 +252,7 @@ void ShowAllBooks()
         Console.WriteLine("Библиотека пуста!");
         return;
     }
-    Console.WriteLine($"\n*** ВСЕ КНИГИ В БИБЛИОТЕКЕ ({library.Count}) ***");
+    Console.WriteLine($"\nВСЕ КНИГИ В БИБЛИОТЕКЕ ({library.Count})");
     foreach (var book in library)
     {
         book.PrintInfo();
