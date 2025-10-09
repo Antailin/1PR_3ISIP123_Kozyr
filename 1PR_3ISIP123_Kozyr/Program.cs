@@ -1,4 +1,5 @@
 ﻿List<Book> library = new List<Book>();
+int BookId = 1;
 Console.WriteLine("\n*** МЕНЮ ***");
 Console.WriteLine("1 - Добавить книгу");
 Console.WriteLine("2 - Удалить книгу");
@@ -21,16 +22,16 @@ while (choice != "8")
             RemoveBook();
             break;
         case "3":
-            SearchBooks();
+            SearchBook();
             break;
         case "4":
             SortBooks();
             break;
         case "5":
-            ShowPriceInfo();
+            PriceInfo();
             break;
         case "6":
-            ShowAuthorStats();
+            AuthorStats();
             break;
         case "7":
             ShowAllBooks();
@@ -50,4 +51,47 @@ while (choice != "8")
     Console.WriteLine("8 - Выход");
     Console.Write("Ваш выбор: ");
     choice = Console.ReadLine();
+}
+void AddBook()
+{
+
+}
+void RemoveBook()
+{
+
+}
+void SearchBook()
+{
+
+}
+void SortBooks()
+{
+
+}
+void PriceInfo()
+{
+
+}
+void AuthorStats()
+{
+
+}
+void ShowAllBooks()
+{
+
+}
+public class Book
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Author { get; set; }
+    public BookGenre Genre { get; set; }
+    public int Year { get; set; }
+    public int Price { get; set; }
+}
+public enum BookGenre
+{
+    Fantasy,
+    Science,
+    Romance
 }
