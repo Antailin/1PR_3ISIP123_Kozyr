@@ -233,11 +233,30 @@ void PriceInfo()
 }
 void AuthorStats()
 {
+    if (library.Any() == false)
+    {
+        Console.WriteLine("Библиотека пуста!");
+        return;
+    }
+    Console.WriteLine("\nСТАТИСТИКА ПО АВТОРАМ");
+    foreach (var group in library.GroupBy(b => b.Author))
+    {
+        Console.WriteLine($"{group.Key}: {group.Count()} книг(и)");
+    }
 
 }
 void ShowAllBooks()
 {
-
+    if (library.Any() == false)
+    {
+        Console.WriteLine("Библиотека пуста!");
+        return;
+    }
+    Console.WriteLine($"\n*** ВСЕ КНИГИ В БИБЛИОТЕКЕ ({library.Count}) ***");
+    foreach (var book in library)
+    {
+        book.PrintInfo();
+    }
 }
 
 public class Book
