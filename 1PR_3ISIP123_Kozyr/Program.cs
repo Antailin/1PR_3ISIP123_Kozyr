@@ -202,7 +202,7 @@ void SortBooks()
             SortedBooks = library.OrderBy(b => b.Year);
             Console.WriteLine("\nКниги отсортированы по году издания:");
             break;
-
+             
         default:
             Console.WriteLine("Неверный выбор!");
             return;
