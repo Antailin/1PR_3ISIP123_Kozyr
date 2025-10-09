@@ -216,7 +216,20 @@ void SortBooks()
 }
 void PriceInfo()
 {
+    if (library.Any() == false)
+    {
+        Console.WriteLine("Библиотека пуста!");
+        return;
+    }
 
+    var MostExpensive = library.OrderByDescending(b => b.Price).First();
+    var Cheapest = library.OrderBy(b => b.Price).First();
+
+    Console.WriteLine("\nСАМАЯ ДОРОГАЯ КНИГА");
+    MostExpensive.PrintInfo();
+
+    Console.WriteLine("САМАЯ ДЕШЕВАЯ КНИГА");
+    Cheapest.PrintInfo();
 }
 void AuthorStats()
 {
