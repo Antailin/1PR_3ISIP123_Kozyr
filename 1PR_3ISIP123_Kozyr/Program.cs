@@ -206,12 +206,6 @@ public class UniversitySystem
         nextPersonId = 1;
         nextCourseId = 1;
     }
-    public void AddStudent(string name, int age, string email, string studentId)
-    {
-        var student = new Student(nextPersonId++, name, age, email, studentId);
-        students.Add(student);
-        Console.WriteLine("Студент успешно добавлен!");
-    }
     public void ShowAllStudents()
     {
         if (!students.Any())
@@ -254,6 +248,24 @@ public class UniversitySystem
             Console.WriteLine(course.GetInfo());
             Console.WriteLine("---");
         }
+    }
+    public void AddStudent(string name, int age, string email, string studentId)
+    {
+        var student = new Student(nextPersonId++, name, age, email, studentId);
+        students.Add(student);
+        Console.WriteLine("Студент успешно добавлен!");
+    }
+    public void AddTeacher(string name, int age, string email, string teacherId, string department)
+    {
+        var teacher = new Teacher(nextPersonId++, name, age, email, teacherId, department);
+        teachers.Add(teacher);
+        Console.WriteLine("Преподаватель успешно добавлен!");
+    }
+    public void AddCourse(string name, string description)
+    {
+        var course = new Course(nextCourseId++, name, description);
+        courses.Add(course);
+        Console.WriteLine("Курс успешно добавлен!");
     }
 
 
