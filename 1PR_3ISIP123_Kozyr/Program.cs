@@ -331,6 +331,18 @@ public class UniversitySystem
             Console.WriteLine("Преподаватель уже ведет этот курс!");
         }
     }
+    public void ShowStudentCourses(string studentId)
+    {
+        var student = FindStudentById(studentId);
+        if (student == null)
+        {
+            Console.WriteLine("Студент не найден!");
+            return;
+        }
+
+        Console.WriteLine($"\nКУРСЫ СТУДЕНТА {student.Name}");
+        Console.WriteLine(student.GetCoursesInfo());
+    }
 
 
 }
