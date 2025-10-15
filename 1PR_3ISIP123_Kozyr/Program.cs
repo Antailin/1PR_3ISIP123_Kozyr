@@ -267,6 +267,18 @@ public class UniversitySystem
         courses.Add(course);
         Console.WriteLine("Курс успешно добавлен!");
     }
+    public Student FindStudentById(string studentId)
+    {
+        return students.FirstOrDefault(s => s.StudentId == studentId);
+    }
+    public Teacher FindTeacherById(string teacherId)
+    {
+        return teachers.FirstOrDefault(t => t.TeacherId == teacherId);
+    }
+    public Course FindCourseById(int courseId)
+    {
+        return courses.FirstOrDefault(c => c.CourseId == courseId);
+    }
 
 
 }
