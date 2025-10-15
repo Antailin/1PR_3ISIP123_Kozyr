@@ -279,6 +279,32 @@ public class UniversitySystem
     {
         return courses.FirstOrDefault(c => c.CourseId == courseId);
     }
+    public void EnrollStudentInCourse(string studentId, int courseId)
+    {
+        var student = FindStudentById(studentId);
+        var course = FindCourseById(courseId);
+
+        if (student == null)
+        {
+            Console.WriteLine("Студент не найден!");
+            return;
+        }
+
+        if (course == null)
+        {
+            Console.WriteLine("Курс не найден!");
+            return;
+        }
+
+        if (student.EnrollInCourse(course))
+        {
+            Console.WriteLine("Студент успешно записан на курс!");
+        }
+        else
+        {
+            Console.WriteLine("Студент уже записан на этот курс!");
+        }
+    }
 
 
 }
