@@ -371,3 +371,31 @@ public class UniversitySystem
 
 
 }
+public abstract class Person
+{
+    protected int personId;
+    protected string name;
+    protected int age;
+    protected string email;
+
+    public Person(int personId, string name, int age, string email)
+    {
+        this.personId = personId;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+
+    public int PersonId => personId;
+    public string Name => name;
+    public int Age => age;
+    public string Email => email;
+
+    public abstract string GetInfo();
+
+    public override string ToString()
+    {
+        return GetInfo();
+    }
+}
+
