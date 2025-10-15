@@ -305,6 +305,32 @@ public class UniversitySystem
             Console.WriteLine("Студент уже записан на этот курс!");
         }
     }
+    public void AssignTeacherToCourse(string teacherId, int courseId)
+    {
+        var teacher = FindTeacherById(teacherId);
+        var course = FindCourseById(courseId);
+
+        if (teacher == null)
+        {
+            Console.WriteLine("Преподаватель не найден!");
+            return;
+        }
+
+        if (course == null)
+        {
+            Console.WriteLine("Курс не найден!");
+            return;
+        }
+
+        if (teacher.AssignToCourse(course))
+        {
+            Console.WriteLine("Преподаватель успешно назначен на курс!");
+        }
+        else
+        {
+            Console.WriteLine("Преподаватель уже ведет этот курс!");
+        }
+    }
 
 
 }
