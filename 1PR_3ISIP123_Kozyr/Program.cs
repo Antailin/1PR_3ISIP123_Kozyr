@@ -142,4 +142,43 @@ static void ManageTeachers(UniversitySystem university)
         }
     }
 }
+static void ManageCourses(UniversitySystem university)
+{
+    bool inMenu = true;
+    while (inMenu)
+    {
+        Console.WriteLine("\nУПРАВЛЕНИЕ КУРСАМИ");
+        Console.WriteLine("1. Добавить курс");
+        Console.WriteLine("2. Показать все курсы");
+        Console.WriteLine("3. Показать студентов курса");
+        Console.WriteLine("0. Назад");
+        Console.Write("Выберите опцию: ");
 
+        string choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                Console.Write("Введите название курса: ");
+                string name = Console.ReadLine();
+                Console.Write("Введите описание курса: ");
+                string description = Console.ReadLine();
+                university.AddCourse(name, description);
+                break;
+            case "2":
+                university.ShowAllCourses();
+                break;
+            case "3":
+                Console.Write("Введите ID курса: ");
+                int courseId = int.Parse(Console.ReadLine());
+                university.ShowCourseStudents(courseId);
+                break;
+            case "0":
+                inMenu = false;
+                break;
+            default:
+                Console.WriteLine("Неверный выбор!");
+                break;
+        }
+
+    }
+}
