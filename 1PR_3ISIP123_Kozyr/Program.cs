@@ -398,4 +398,146 @@ public abstract class Person
         return GetInfo();
     }
 }
+public class Student : Person
+{
+    private string studentId;
+    private List<Course> courses;
+
+    public Student(int personId, string name, int age, string email, string studentId)
+        : base(personId, name, age, email)
+    {
+        this.studentId = studentId;
+        this.courses = new List<Course>();
+    }
+
+    public string StudentId => studentId;
+    public List<Course> Courses => new List<Course>(courses);
+
+    public bool EnrollInCourse(Course course)
+    {
+        if (!courses.Contains(course))
+        {
+            courses.Add(course);
+            course.AddStudent(this);
+            return true;
+        }
+        return false;
+    }
+
+    public string GetCoursesInfo()
+    {
+        if (!courses.Any())
+            return "Не записан на курсы";
+
+        return string.Join("\n", courses.Select(c =>
+            $"- {c.Name} (Преподаватель: {c.Teacher?.Name ?? "Не назначен"})"));
+    }
+
+    public override string GetInfo()
+    {
+        return $"Студент: {name} (ID: {studentId}), Возраст: {age}, Email: {email}";
+    }
+}
+public class Teacher : Person
+{
+    private string teacherId;
+    private string department;
+    private List<Course> courses;
+
+    public Teacher(int personId, string name, int age, string email, string teacherId, string department)
+        : base(personId, name, age, email)
+    {
+        this.teacherId = teacherId;
+        this.department = department;
+        this.courses = new List<Course>();
+    }
+
+    public string TeacherId => teacherId;
+    public string Department => department;
+    public List<Course> Courses => new List<Course>(courses);
+
+    public bool AssignToCourse(Course course)
+    {
+        if (!courses.Contains(course))
+        {
+            courses.Add(course);
+            course.Teacher = this;
+            return true;
+        }
+        return false;
+    }
+
+    public string GetCoursesInfo()
+    {
+        if (!courses.Any())
+            return "Не ведет курсы";
+
+        return string.Join("\n", courses.Select(c =>
+            $"- {c.Name} ({c.Students.Count} студентов)"));
+    }
+
+    public override string GetInfo()
+    {
+        return $"Преподаватель: {name} (ID: {teacherId}), Кафедра: {department}, Email: {email}";
+    }
+}
+public class Course
+{
+    private int courseId;
+    private string name;
+    private string description;
+    private Teacher teacher;
+    private List<Student> students;
+
+    public Course(int courseId, string name, string description)
+    {
+        this.courseId = courseId;
+        this.name = name;
+        this.description = description;
+        this.students = new List<Student>();
+    }
+
+    public int CourseId => courseId;
+    public string Name => name;
+    public string Description => description;
+
+    public Teacher Teacher
+    {
+        get => teacher;
+        set => teacher = value;
+    }
+
+    public List<Student> Students => new List<Student>(students);
+
+    public bool AddStudent(Student student)
+    {
+        if (!students.Contains(student))
+        {
+            students.Add(student);
+            return true;
+        }
+        return false;
+    }
+
+    public string GetStudentsInfo()
+    {
+        if (!students.Any())
+            return "На курс не записаны студенты";
+
+        return string.Join("\n", students.Select(s =>
+            $"- {s.Name} (ID: {s.StudentId})"));
+    }
+
+    public string GetInfo()
+    {
+        return $"Курс: {name} (ID: {courseId})\nОписание: {description}\n" +
+               $"Преподаватель: {teacher?.Name ?? "Не назначен"}\n" +
+               $"Количество студентов: {students.Count}";
+    }
+
+    public override string ToString()
+    {
+        return $"Курс: {name} (ID: {courseId})";
+    }
+}
 
