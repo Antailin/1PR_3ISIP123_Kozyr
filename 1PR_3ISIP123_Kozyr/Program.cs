@@ -182,3 +182,11 @@ static void ManageCourses(UniversitySystem university)
 
     }
 }
+static void ShowAllInformation(UniversitySystem university)
+{
+    Console.WriteLine("\nПОЛНАЯ ИНФОРМАЦИЯ О СИСТЕМЕ");
+    university.ShowAllStudents();
+    university.ShowAllTeachers();
+    university.ShowAllCourses();
+
+}
