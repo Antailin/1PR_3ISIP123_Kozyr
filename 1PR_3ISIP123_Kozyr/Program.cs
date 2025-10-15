@@ -89,3 +89,57 @@ static void ManageStudents(UniversitySystem university)
         }
     }
 }
+static void ManageTeachers(UniversitySystem university)
+{
+    bool inMenu = true;
+    while (inMenu)
+    {
+        Console.WriteLine("\nУПРАВЛЕНИЕ ПРЕПОДАВАТЕЛЯМИ");
+        Console.WriteLine("1. Добавить преподавателя");
+        Console.WriteLine("2. Показать всех преподавателей");
+        Console.WriteLine("3. Назначить преподавателя на курс");
+        Console.WriteLine("4. Показать курсы преподавателя");
+        Console.WriteLine("0. Назад");
+        Console.Write("Выберите опцию: ");
+
+        string choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                Console.Write("Введите имя: ");
+                string name = Console.ReadLine();
+                Console.Write("Введите возраст: ");
+                int age = int.Parse(Console.ReadLine());
+                Console.Write("Введите email: ");
+                string email = Console.ReadLine();
+                Console.Write("Введите ID преподавателя: ");
+                string teacherId = Console.ReadLine();
+                Console.Write("Введите кафедру: ");
+                string department = Console.ReadLine();
+                university.AddTeacher(name, age, email, teacherId, department);
+                break;
+            case "2":
+                university.ShowAllTeachers();
+                break;
+            case "3":
+                Console.Write("Введите ID преподавателя: ");
+                string teachId = Console.ReadLine();
+                Console.Write("Введите ID курса: ");
+                int coursId = int.Parse(Console.ReadLine());
+                university.AssignTeacherToCourse(teachId, coursId);
+                break;
+            case "4":
+                Console.Write("Введите ID преподавателя: ");
+                string teacherIdCourses = Console.ReadLine();
+                university.ShowTeacherCourses(teacherIdCourses);
+                break;
+            case "0":
+                inMenu = false;
+                break;
+            default:
+                Console.WriteLine("Неверный выбор!");
+                break;
+        }
+    }
+}
+
