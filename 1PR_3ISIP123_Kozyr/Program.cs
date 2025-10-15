@@ -343,6 +343,31 @@ public class UniversitySystem
         Console.WriteLine($"\nКУРСЫ СТУДЕНТА {student.Name}");
         Console.WriteLine(student.GetCoursesInfo());
     }
+    public void ShowCourseStudents(int courseId)
+    {
+        var course = FindCourseById(courseId);
+        if (course == null)
+        {
+            Console.WriteLine("Курс не найден!");
+            return;
+        }
+
+        Console.WriteLine($"\nСТУДЕНТЫ КУРСА {course.Name}");
+        Console.WriteLine(course.GetStudentsInfo());
+    }
+
+    public void ShowTeacherCourses(string teacherId)
+    {
+        var teacher = FindTeacherById(teacherId);
+        if (teacher == null)
+        {
+            Console.WriteLine("Преподаватель не найден!");
+            return;
+        }
+
+        Console.WriteLine($"\nКУРСЫ ПРЕПОДАВАТЕЛЯ {teacher.Name}");
+        Console.WriteLine(teacher.GetCoursesInfo());
+    }
 
 
 }
