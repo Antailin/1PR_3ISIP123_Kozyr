@@ -190,3 +190,71 @@ static void ShowAllInformation(UniversitySystem university)
     university.ShowAllCourses();
 
 }
+public class UniversitySystem
+{
+    private List<Student> students;
+    private List<Teacher> teachers;
+    private List<Course> courses;
+    private int nextPersonId;
+    private int nextCourseId;
+
+    public UniversitySystem()
+    {
+        students = new List<Student>();
+        teachers = new List<Teacher>();
+        courses = new List<Course>();
+        nextPersonId = 1;
+        nextCourseId = 1;
+    }
+    public void AddStudent(string name, int age, string email, string studentId)
+    {
+        var student = new Student(nextPersonId++, name, age, email, studentId);
+        students.Add(student);
+        Console.WriteLine("Студент успешно добавлен!");
+    }
+    public void ShowAllStudents()
+    {
+        if (!students.Any())
+        {
+            Console.WriteLine("Студентов нет в системе.");
+            return;
+        }
+
+        Console.WriteLine("\nВСЕ СТУДЕНТЫ");
+        foreach (var student in students)
+        {
+            Console.WriteLine(student.GetInfo());
+        }
+    }
+    public void ShowAllTeachers()
+    {
+        if (!teachers.Any())
+        {
+            Console.WriteLine("Преподавателей нет в системе.");
+            return;
+        }
+
+        Console.WriteLine("\nВСЕ ПРЕПОДАВАТЕЛИ");
+        foreach (var teacher in teachers)
+        {
+            Console.WriteLine(teacher.GetInfo());
+        }
+    }
+    public void ShowAllCourses()
+    {
+        if (!courses.Any())
+        {
+            Console.WriteLine("Курсов нет в системе.");
+            return;
+        }
+
+        Console.WriteLine("\nВСЕ КУРСЫ");
+        foreach (var course in courses)
+        {
+            Console.WriteLine(course.GetInfo());
+            Console.WriteLine("---");
+        }
+    }
+
+
+}
