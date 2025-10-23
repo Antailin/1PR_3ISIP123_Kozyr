@@ -63,3 +63,34 @@ public class Player
     public bool IsAlive() => HP > 0;
     public void Heal() => HP = MaxHP;
 }
+public class Game
+{
+    private Player player;
+    private Random random;
+    private int turnCount;
+
+    private readonly List<Enemy> normalEnemies;
+    private readonly List<Enemy> bosses;
+
+    public Game()
+    {
+        player = new Player();
+        random = new Random();
+        turnCount = 0;
+
+        normalEnemies = new List<Enemy>
+            {
+                new Enemy("Гоблин", 30, 8, 3, critChance: 0.2),
+                new Enemy("Скелет", 25, 10, 2, ignoreDefense: true),
+                new Enemy("Маг", 20, 12, 1, freezeChance: 0.25)
+            };
+
+        bosses = new List<Enemy>
+            {
+                new Enemy("ВВГ (Гоблин)", 60, 12, 4, critChance: 0.3),
+                new Enemy("Ковальский (Скелет)", 63, 13, 3, ignoreDefense: true),
+                new Enemy("Архимаг C++", 36, 19, 1, freezeChance: 0.35),
+                new Enemy("Пестов С--", 33, 18, 1, ignoreDefense: true, freezeChance: 0.4)
+            };
+    }
+}
