@@ -93,4 +93,52 @@ public class Game
                 new Enemy("Пестов С--", 33, 18, 1, ignoreDefense: true, freezeChance: 0.4)
             };
     }
+    public void Start()
+    {
+        Console.WriteLine("ТЕКСТОВЫЙ РОГАЛИК");
+        Console.WriteLine("Добро пожаловать в игру!");
+        Console.WriteLine("Каждый ход вас ждет либо сундук, либо враг.");
+        Console.WriteLine("Каждые 10 ходов - встреча с боссом!\n");
+
+        while (player.IsAlive())
+        {
+            turnCount++;
+            Console.WriteLine($"\nХод {turnCount}");
+            Console.WriteLine($"Здоровье: {player.HP}/{player.MaxHP}");
+            Console.WriteLine($"Оружие: {player.Weapon.Name} (Атака: {player.Weapon.Attack})");
+            Console.WriteLine($"Броня: {player.Armor.Name} (Защита: {player.Armor.Defense})");
+
+            if (player.IsFrozen)
+            {
+                Console.WriteLine("Вы заморожены и пропускаете ход!");
+                player.IsFrozen = false;
+                continue;
+            }
+            if (turnCount % 10 == 0)
+            {
+                Console.WriteLine("\n!!! ПОЯВИЛСЯ БОСС !!!");
+                Enemy boss = bosses[random.Next(bosses.Count)];
+                Fight(boss);
+            }
+            else
+            {
+                if (random.Next(2) == 0)
+                {
+                    FightEnemy();
+                }
+                else
+                {
+                    OpenChest();
+                }
+            }
+            if (!player.IsAlive())
+            {
+                Console.WriteLine("\nВЫ ПОГИБЛИ");
+                Console.WriteLine($"Вы продержались {turnCount} ходов");
+                break;
+            }
+
+        }
+    }
 }
+    
