@@ -13,3 +13,12 @@ public class Item
         Defense = defense;
     }
 }
+public class Weapon : Item
+{
+    public Weapon(string name, int attack) : base(name, attack, 0) { }
+}
+
+public class Armor : Item
+{
+    public Armor(string name, int defense) : base(name, 0, defense) { }
+}
