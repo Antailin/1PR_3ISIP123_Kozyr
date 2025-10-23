@@ -224,5 +224,45 @@ public class Game
             Console.WriteLine($"\nВы победили {enemy.Name}!");
         }
     }
+    private void OpenChest()
+    {
+        Console.WriteLine("\nВы нашли сундук!");
+        int chestType = random.Next(3);
+
+        switch (chestType)
+        {
+            case 0:
+                Console.WriteLine("В сундуке лечебное зелье!");
+                player.Heal();
+                Console.WriteLine("Ваше здоровье полностью восстановлено!");
+                break;
+
+            case 1:
+                Weapon newWeapon = GenerateWeapon();
+                Console.WriteLine($"В сундуке оружие: {newWeapon.Name} (Атака: {newWeapon.Attack})");
+                Console.WriteLine($"Ваше текущее оружие: {player.Weapon.Name} (Атака: {player.Weapon.Attack})");
+                Console.WriteLine("Взять новое оружие? (1 - да, 2 - нет)");
+
+                if (GetChoice(1, 2) == 1)
+                {
+                    player.Weapon = newWeapon;
+                    Console.WriteLine("Вы экипировали новое оружие!");
+                }
+                break;
+
+            case 2:
+                Armor newArmor = GenerateArmor();
+                Console.WriteLine($"В сундуке броня: {newArmor.Name} (Защита: {newArmor.Defense})");
+                Console.WriteLine($"Ваша текущая броня: {player.Armor.Name} (Защита: {player.Armor.Defense})");
+                Console.WriteLine("Взять новую броню? (1 - да, 2 - нет)");
+
+                if (GetChoice(1, 2) == 1)
+                {
+                    player.Armor = newArmor;
+                    Console.WriteLine("Вы экипировали новую броню!");
+                }
+                break;
+        }
+    }
 }
     
