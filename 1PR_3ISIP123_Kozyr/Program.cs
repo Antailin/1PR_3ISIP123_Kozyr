@@ -289,6 +289,18 @@ public class Game
             };
         return armors[random.Next(armors.Length)];
     }
-
+    private int GetChoice(int min, int max)
+    {
+        while (true)
+        {
+            Console.Write($"Выберите действие ({min}-{max}): ");
+            if (int.TryParse(Console.ReadLine(), out int choice) && choice >= min && choice <= max)
+            {
+                return choice;
+            }
+            Console.WriteLine("Неверный ввод!");    
+        }
+    }
 }
+
     
