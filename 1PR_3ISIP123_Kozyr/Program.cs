@@ -264,5 +264,31 @@ public class Game
                 break;
         }
     }
+    private Weapon GenerateWeapon()
+    {
+        var weapons = new[]
+        {
+                new Weapon("Кинжал", 8),
+                new Weapon("Меч", 12),
+                new Weapon("Топор", 15),
+                new Weapon("Посох", 10),
+                new Weapon("Двуручный меч", 18)
+            };
+        return weapons[random.Next(weapons.Length)];
+    }
+
+    private Armor GenerateArmor()
+    {
+        var armors = new[]
+        {
+                new Armor("Кожаная броня", 5),
+                new Armor("Кольчуга", 8),
+                new Armor("Латы", 12),
+                new Armor("Мантию мага", 6),
+                new Armor("Доспех воина", 10)
+            };
+        return armors[random.Next(armors.Length)];
+    }
+
 }
     
