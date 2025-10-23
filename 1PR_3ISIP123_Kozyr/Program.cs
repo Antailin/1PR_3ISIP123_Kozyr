@@ -140,5 +140,89 @@ public class Game
 
         }
     }
+    private void FightEnemy()
+    {
+        Enemy enemy = normalEnemies[random.Next(normalEnemies.Count)];
+        Fight(enemy);
+    }
+
+    private void Fight(Enemy enemy)
+    {
+        Console.WriteLine($"\nПеред вами: {enemy.Name}");
+        Console.WriteLine($"HP: {enemy.HP}, Атака: {enemy.Attack}, Защита: {enemy.Defense}");
+
+        while (enemy.IsAlive() && player.IsAlive())
+        {
+            Console.WriteLine("\nВаш ход:");
+            Console.WriteLine("1 - Атака");
+            Console.WriteLine("2 - Защита");
+
+            int choice = GetChoice(1, 2);
+            bool defended = false;
+
+            if (choice == 2)
+            {
+                defended = true;
+                Console.WriteLine("Вы готовитесь к защите...");
+            }
+            else
+            {
+                int playerDamage = player.GetAttack();
+                enemy.HP -= playerDamage;
+                Console.WriteLine($"Вы нанесли {playerDamage} урона!");
+                Console.WriteLine($"У {enemy.Name} осталось {Math.Max(0, enemy.HP)} HP");
+            }
+
+            if (!enemy.IsAlive()) break;
+            Console.WriteLine($"\nХод {enemy.Name}:");
+
+            if (defended && random.NextDouble() < 0.4)
+            {
+                Console.WriteLine("Вы успешно уклонились от атаки!");
+                continue;
+            }
+
+            int enemyDamage = enemy.Attack;
+            if (random.NextDouble() < enemy.CritChance)
+            {
+                enemyDamage = (int)(enemyDamage * 1.5);
+                Console.WriteLine("Критический удар!");
+            }
+            if (random.NextDouble() < enemy.FreezeChance)
+            {
+                player.IsFrozen = true;
+                Console.WriteLine("Вас заморозили! Вы пропустите следующий ход.");
+            }
+            int finalDamage;
+            if (enemy.IgnoreDefense)
+            {
+                finalDamage = enemyDamage;
+                Console.WriteLine("Враг игнорирует вашу защиту!");
+            }
+            else
+            {
+                if (defended)
+                {
+                    double blockPercent = 0.7 + random.NextDouble() * 0.3;
+                    int blockedDamage = (int)(player.GetDefense() * blockPercent);
+                    finalDamage = Math.Max(0, enemyDamage - blockedDamage);
+                    Console.WriteLine($"Вы заблокировали {blockedDamage} урона");
+                }
+                else
+                {
+                    finalDamage = Math.Max(0, enemyDamage - player.GetDefense());
+                }
+            }
+
+            player.HP -= finalDamage;
+            Console.WriteLine($"Вам нанесли {finalDamage} урона!");
+            Console.WriteLine($"У вас осталось {Math.Max(0, player.HP)} HP");
+        }
+
+        if (!enemy.IsAlive())
+        {
+            Console.WriteLine($"\nВы победили {enemy.Name}!");
+        }
+    }
 }
     
