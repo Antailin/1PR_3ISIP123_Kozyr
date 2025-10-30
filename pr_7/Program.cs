@@ -64,5 +64,17 @@ namespace AutoService
             Console.WriteLine($"Начальный баланс: {warehouse.Balance:C}");
             ShowWarehouseStatus();
         }
+        private void LoadWarehouseData()
+        {
+            var dbWarehouse = Core.Context.Sklad.FirstOrDefault();
+            if (dbWarehouse != null)
+            {
+                warehouse = new Warehouse
+                {
+                    ID = dbWarehouse.ID,
+                    Balance = (int)dbWarehouse.Balance
+                };
+            }
+        }
     }
 }
