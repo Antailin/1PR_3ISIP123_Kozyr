@@ -87,5 +87,19 @@ namespace AutoService
                 });
             }
         }
+        private void LoadAvailableParts()
+        {
+            availableParts = new List<Part>();
+            var dbParts = Core.Context.Detale.ToList();
+            foreach (var dbPart in dbParts)
+            {
+                availableParts.Add(new Part
+                {
+                    ID = dbPart.ID,
+                    Name = dbPart.Name,
+                    Price = (decimal)dbPart.Price
+                });
+            }
+        }
     }
 }
