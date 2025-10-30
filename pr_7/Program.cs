@@ -150,5 +150,27 @@ namespace AutoService
                 }
             }
         }
+        private Customer GenerateCustomer()
+        {
+            var brokenPart = availableParts[random.Next(availableParts.Count)];
+            var workCost = brokenPart.Price * 0.3m;
+            var repairCost = brokenPart.Price + workCost;
+
+            return new Customer
+            {
+                ID = random.Next(1000, 9999),
+                CarModel = GenerateCarModel(),
+                BrokenPartID = brokenPart.ID,
+                RepairCost = repairCost,
+                IsServed = false
+            };
+        }
+        private string GenerateCarModel()
+        {
+            var brands = new[] { "Toyota", "Honda", "Ford", "BMW", "Mercedes", "Audi", "Volkswagen", "Hyundai" };
+            var models = new[] { "Camry", "Civic", "Focus", "X5", "C-Class", "A4", "Golf", "Elantra" };
+
+            return $"{brands[random.Next(brands.Length)]} {models[random.Next(models.Length)]}";
+        }
     }
 }
