@@ -40,4 +40,19 @@ namespace AutoService
         public int Quantity { get; set; }
         public int RemainingCars { get; set; }
     }
+    public class AutoServiceGame
+    {
+        private Warehouse warehouse;
+        private List<Part> availableParts;
+        private List<WarehousePart> warehouseParts;
+        private List<PurchaseOrder> pendingOrders;
+        private Random random;
+
+        public AutoServiceGame()
+        {
+            this.random = new Random();
+            this.pendingOrders = new List<PurchaseOrder>();
+            InitializeGame();
+        }
+    }
 }
