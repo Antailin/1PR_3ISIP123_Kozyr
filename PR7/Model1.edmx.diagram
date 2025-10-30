@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7dd03d23522647209271cde8753cf768" Name="Diagram1">
+        <EntityTypeShape EntityType="Pr_7_GordModel.AutoParts" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pr_7_GordModel.Clients" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pr_7_GordModel.purchase_order" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pr_7_GordModel.RepairOrders" Width="1.5" PointX="6" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pr_7_GordModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pr_7_GordModel.Warehouse" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <AssociationConnector Association="Pr_7_GordModel.FK_purchase_order_AutoParts1" ManuallyRouted="false" />
+        <AssociationConnector Association="Pr_7_GordModel.FK_RepairOrders_AutoParts1" ManuallyRouted="false" />
+        <AssociationConnector Association="Pr_7_GordModel.FK_Warehouse_AutoParts2" ManuallyRouted="false" />
+        <AssociationConnector Association="Pr_7_GordModel.FK_RepairOrders_Clients1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
