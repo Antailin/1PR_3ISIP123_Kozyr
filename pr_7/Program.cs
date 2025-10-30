@@ -61,7 +61,7 @@ namespace AutoService
             LoadWarehouseData();
             LoadAvailableParts();
             Console.WriteLine("Добро пожаловать в автосервис!");
-            Console.WriteLine($"Начальный баланс: {warehouse.Balance:C}");
+            Console.WriteLine($"Начальный баланс: {warehouse.Balance}");
             ShowWarehouseStatus();
         }
         private void LoadWarehouseData()
@@ -74,6 +74,17 @@ namespace AutoService
                     ID = dbWarehouse.ID,
                     Balance = (int)dbWarehouse.Balance
                 };
+            }
+            warehouseParts = new List<WarehousePart>();
+            var dbWarehouseParts = Core.Context.DetaleSklad.ToList();
+            foreach (var dbPart in dbWarehouseParts)
+            {
+                warehouseParts.Add(new WarehousePart
+                {
+                    WarehouseID = dbPart.SkladID,
+                    PartID = dbPart.DetaleID,
+                    Count = (int)dbPart.Count
+                });
             }
         }
     }
