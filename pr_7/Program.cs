@@ -172,5 +172,37 @@ namespace AutoService
 
             return $"{brands[random.Next(brands.Length)]} {models[random.Next(models.Length)]}";
         }
+        private void ShowCustomerInfo(Customer customer)
+        {
+            var brokenPart = availableParts.First(p => p.ID == customer.BrokenPartID);
+
+            Console.WriteLine($"Клиент приехал на {customer.CarModel}");
+            Console.WriteLine($"Сломана деталь: {brokenPart.Name}");
+            Console.WriteLine($"Стоимость ремонта: {customer.RepairCost}");
+            Console.WriteLine($"На складе есть: {GetPartCount(customer.BrokenPartID)} шт.");
+        }
+        private void ProcessCustomerService(Customer customer)
+        {
+            Console.WriteLine("\nВаши действия:");
+            Console.WriteLine("1 - Принять заказ и починить");
+            Console.WriteLine("2 - Отказать в обслуживании");
+            Console.Write("Выберите действие: ");
+
+            var choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    AcceptOrder(customer);
+                    break;
+                case "2":
+                    RefuseOrder(customer);
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор! Отказ в обслуживании.");
+                    RefuseOrder(customer);
+                    break;
+            }
+        }
     }
 }
