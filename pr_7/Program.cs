@@ -40,6 +40,7 @@ namespace AutoService
         public int Quantity { get; set; }
         public int RemainingCars { get; set; }
     }
+
     public class AutoServiceGame
     {
         private Warehouse warehouse;
@@ -53,6 +54,15 @@ namespace AutoService
             this.random = new Random();
             this.pendingOrders = new List<PurchaseOrder>();
             InitializeGame();
+        }
+
+        private void InitializeGame()
+        {
+            LoadWarehouseData();
+            LoadAvailableParts();
+            Console.WriteLine("Добро пожаловать в автосервис!");
+            Console.WriteLine($"Начальный баланс: {warehouse.Balance:C}");
+            ShowWarehouseStatus();
         }
     }
 }
