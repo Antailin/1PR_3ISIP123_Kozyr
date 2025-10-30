@@ -122,5 +122,33 @@ namespace AutoService
                 ShowMainMenu();
             }
         }
+        private void ShowMainMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("\nГлавное меню");
+                Console.WriteLine("1 - Следующий клиент");
+                Console.WriteLine("2 - Заказать детали");
+                Console.WriteLine("3 - Показать статус склада");
+                Console.Write("Выберите действие: ");
+
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        return;
+                    case "2":
+                        ShowPurchaseMenu();
+                        break;
+                    case "3":
+                        ShowWarehouseStatus();
+                        break;
+                    default:
+                        Console.WriteLine("Неверный выбор! Попробуйте снова.");
+                        break;
+                }
+            }
+        }
     }
 }
