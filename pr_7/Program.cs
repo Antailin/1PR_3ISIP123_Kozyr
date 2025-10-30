@@ -101,5 +101,26 @@ namespace AutoService
                 });
             }
         }
+        public void StartGame()
+        {
+            int carCounter = 0;
+
+            while (true)
+            {
+                carCounter++;
+                Console.WriteLine($"\nМашина #{carCounter}");
+                ProcessPendingOrders();
+                var customer = GenerateCustomer();
+                ShowCustomerInfo(customer);
+                ProcessCustomerService(customer);
+                if (warehouse.Balance <= 0)
+                {
+                    Console.WriteLine("\nВы банкрот! Игра окончена.");
+                    break;
+                }
+                ShowWarehouseStatus();
+                ShowMainMenu();
+            }
+        }
     }
 }
