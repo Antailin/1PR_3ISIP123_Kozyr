@@ -204,5 +204,28 @@ namespace AutoService
                     break;
             }
         }
+        private void AcceptOrder(Customer customer)
+        {
+            var brokenPartID = customer.BrokenPartID;
+            var partCount = GetPartCount(brokenPartID);
+
+            if (partCount > 0)
+            {
+                UsePart(brokenPartID);
+                warehouse.Balance += customer.RepairCost;
+                customer.IsServed = true;
+                Console.WriteLine($"Ремонт выполнен успешно! Получено {customer.RepairCost}");
+            }
+            else
+            {
+                ReplaceWithRandomPart(customer);
+            }
+        }
+        private void RefuseOrder(Customer customer)
+        {
+            var penalty = customer.RepairCost * 0.2m; // 20% штраф
+            warehouse.Balance -= penalty;
+            Console.WriteLine($"Отказ в обслуживании. Штраф: {penalty}");
+        }
     }
 }
