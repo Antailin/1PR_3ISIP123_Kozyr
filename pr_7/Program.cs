@@ -261,5 +261,68 @@ namespace AutoService
             var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == partID);
             return warehousePart.Count;
         }
+        private void ShowPurchaseMenu()
+        {
+            Console.WriteLine("\nМеню закупки деталей");
+            Console.WriteLine("Доступные детали:");
+
+            for (int i = 0; i < availableParts.Count; i++)
+            {
+                var part = availableParts[i];
+                var count = GetPartCount(part.ID);
+                Console.WriteLine($"{i + 1}. {part.Name} - {part.Price} (на складе: {count})");
+            }
+
+            Console.WriteLine($"{availableParts.Count + 1}. Вернуться в главное меню");
+            Console.Write("Выберите деталь для заказа: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                if (choice >= 1 && choice <= availableParts.Count)
+                {
+                    var selectedPart = availableParts[choice - 1];
+                    Console.Write($"Сколько {selectedPart.Name} заказать? ");
+
+                    if (int.TryParse(Console.ReadLine(), out int quantity) && quantity > 0)
+                    {
+                        var totalCost = selectedPart.Price * quantity;
+
+                        if (warehouse.Balance >= totalCost)
+                        {
+                            warehouse.Balance -= totalCost;
+                            pendingOrders.Add(new PurchaseOrder
+                            {
+                                PartID = selectedPart.ID,
+                                Quantity = quantity,
+                                RemainingCars = 2
+                            });
+
+                            Console.WriteLine($"Заказ на {quantity} {selectedPart.Name} оформлен!");
+                            Console.WriteLine($"Спиcано: {totalCost}. Поставка через 2 машины.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Недостаточно средств!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверное количество!");
+                    }
+                }
+                else if (choice == availableParts.Count + 1)
+                {
+                    Console.WriteLine("Возврат в главное меню...");
+                }
+                else
+                {
+                    Console.WriteLine("Неверный выбор!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Неверный ввод!");
+            }
+        }
     }
 }
