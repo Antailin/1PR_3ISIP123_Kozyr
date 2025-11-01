@@ -62,7 +62,6 @@ namespace AutoService
             LoadAvailableParts();
             Console.WriteLine("Добро пожаловать в автосервис!");
             Console.WriteLine($"Начальный баланс: {warehouse.Balance}");
-            ShowWarehouseStatus();
         }
         private void LoadWarehouseData()
         {
@@ -118,7 +117,6 @@ namespace AutoService
                     Console.WriteLine("\nВы банкрот! Игра окончена.");
                     break;
                 }
-                ShowWarehouseStatus();
                 ShowMainMenu();
             }
         }
