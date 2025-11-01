@@ -227,5 +227,26 @@ namespace AutoService
             warehouse.Balance -= penalty;
             Console.WriteLine($"Отказ в обслуживании. Штраф: {penalty}");
         }
+        private void ReplaceWithRandomPart(Customer customer)
+        {
+            var availablePartIDs = warehouseParts.Where(wp => wp.Count > 0).Select(wp => wp.PartID).ToList();
+
+            if (availablePartIDs.Count > 0)
+            {
+                var randomPartID = availablePartIDs[random.Next(availablePartIDs.Count)];
+                var randomPart = availableParts.First(p => p.ID == randomPartID);
+                var compensation = customer.RepairCost * 1.5m; // 150% компенсация
+
+                UsePart(randomPartID);
+                warehouse.Balance -= compensation;
+
+                Console.WriteLine($"Нужной детали нет! Установлена {randomPart.Name}");
+                Console.WriteLine($"Клиент недоволен! Выплачена компенсация: {compensation}");
+            }
+            else
+            {
+                Console.WriteLine("На складе нет деталей! Ремонт невозможен.");
+            }
+        }
     }
 }
