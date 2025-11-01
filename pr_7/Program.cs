@@ -248,5 +248,18 @@ namespace AutoService
                 Console.WriteLine("На складе нет деталей! Ремонт невозможен.");
             }
         }
+        private void UsePart(int partID)
+        {
+            var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == partID);
+            if (warehousePart != null && warehousePart.Count > 0)
+            {
+                warehousePart.Count--;
+            }
+        }
+        private int GetPartCount(int partID)
+        {
+            var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == partID);
+            return warehousePart.Count;
+        }
     }
 }
