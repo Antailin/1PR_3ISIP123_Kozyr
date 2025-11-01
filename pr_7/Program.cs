@@ -388,5 +388,22 @@ namespace AutoService
 
         }
     }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                var game = new AutoServiceGame();
+                game.StartGame();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
 
+            Console.WriteLine("Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
+        }
+    }
 }
