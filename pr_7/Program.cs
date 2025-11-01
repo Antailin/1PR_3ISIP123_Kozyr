@@ -355,5 +355,38 @@ namespace AutoService
                 }
             }
         }
+        private void ShowWarehouseStatus()
+        {
+            Console.WriteLine($"\nБаланс: {warehouse.Balance}");
+            Console.WriteLine("Склад:");
+
+            var hasParts = false;
+            foreach (var part in availableParts)
+            {
+                var count = GetPartCount(part.ID);
+                if (count > 0)
+                {
+                    Console.WriteLine($"  {part.Name}: {count} шт.");
+                    hasParts = true;
+                }
+            }
+
+            if (!hasParts)
+            {
+                Console.WriteLine("  Склад пуст!");
+            }
+
+            if (pendingOrders.Count > 0)
+            {
+                Console.WriteLine("\nОжидаются поставки:");
+                foreach (var order in pendingOrders)
+                {
+                    var part = availableParts.First(p => p.ID == order.PartID);
+                    Console.WriteLine($"  {part.Name}: {order.Quantity} шт. (через {order.RemainingCars} машин)");
+                }
+            }
+
+        }
     }
+
 }
