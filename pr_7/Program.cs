@@ -324,5 +324,36 @@ namespace AutoService
                 Console.WriteLine("Неверный ввод!");
             }
         }
+        private void ProcessPendingOrders()
+        {
+            for (int i = pendingOrders.Count - 1; i >= 0; i--)
+            {
+                pendingOrders[i].RemainingCars--;
+
+                if (pendingOrders[i].RemainingCars <= 0)
+                {
+                    var order = pendingOrders[i];
+                    var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == order.PartID);
+
+                    if (warehousePart != null)
+                    {
+                        warehousePart.Count += order.Quantity;
+                    }
+                    else
+                    {
+                        warehouseParts.Add(new WarehousePart
+                        {
+                            WarehouseID = warehouse.ID,
+                            PartID = order.PartID,
+                            Count = order.Quantity
+                        });
+                    }
+
+                    var part = availableParts.First(p => p.ID == order.PartID);
+                    Console.WriteLine($"Поставка получена: {order.Quantity} {part.Name}");
+                    pendingOrders.RemoveAt(i);
+                }
+            }
+        }
     }
 }
