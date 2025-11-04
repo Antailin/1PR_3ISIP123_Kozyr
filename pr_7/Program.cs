@@ -63,6 +63,7 @@ namespace AutoService
             Console.WriteLine("Добро пожаловать в автосервис!");
             Console.WriteLine($"Начальный баланс: {warehouse.Balance}");
         }
+
         private void LoadWarehouseData()
         {
             var dbWarehouse = Core.Context.Sklad.FirstOrDefault();
@@ -86,6 +87,7 @@ namespace AutoService
                 });
             }
         }
+
         private void LoadAvailableParts()
         {
             availableParts = new List<Part>();
@@ -100,6 +102,44 @@ namespace AutoService
                 });
             }
         }
+        private void SaveGameState()
+        {
+            try
+            {
+                var dbWarehouse = Core.Context.Sklad.FirstOrDefault(s => s.ID == warehouse.ID);
+                if (dbWarehouse != null)
+                {
+                    dbWarehouse.Balance = warehouse.Balance;
+                }
+                foreach (var wp in warehouseParts)
+                {
+                    var dbWarehousePart = Core.Context.DetaleSklad
+                        .FirstOrDefault(ds => ds.SkladID == wp.WarehouseID && ds.DetaleID == wp.PartID);
+
+                    if (dbWarehousePart != null)
+                    {
+                        dbWarehousePart.Count = wp.Count;
+                    }
+                    else
+                    {
+                        var newWarehousePart = new DetaleSklad
+                        {
+                            SkladID = wp.WarehouseID,
+                            DetaleID = wp.PartID,
+                            Count = wp.Count
+                        };
+                        Core.Context.DetaleSklad.Add(newWarehousePart);
+                    }
+                }
+                Core.Context.SaveChanges();
+                Console.WriteLine("Данные сохранены в базу данных.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка сохранения в базу данных: {ex.Message}");
+            }
+        }
+
         public void StartGame()
         {
             int carCounter = 0;
@@ -112,6 +152,8 @@ namespace AutoService
                 var customer = GenerateCustomer();
                 ShowCustomerInfo(customer);
                 ProcessCustomerService(customer);
+                SaveGameState();
+
                 if (warehouse.Balance <= 0)
                 {
                     Console.WriteLine("\nВы банкрот! Игра окончена.");
@@ -120,6 +162,7 @@ namespace AutoService
                 ShowMainMenu();
             }
         }
+
         private void ShowMainMenu()
         {
             while (true)
@@ -138,6 +181,7 @@ namespace AutoService
                         return;
                     case "2":
                         ShowPurchaseMenu();
+                        SaveGameState();
                         break;
                     case "3":
                         ShowWarehouseStatus();
@@ -148,6 +192,7 @@ namespace AutoService
                 }
             }
         }
+
         private Customer GenerateCustomer()
         {
             var brokenPart = availableParts[random.Next(availableParts.Count)];
@@ -163,6 +208,7 @@ namespace AutoService
                 IsServed = false
             };
         }
+
         private string GenerateCarModel()
         {
             var brands = new[] { "Toyota", "Honda", "Ford", "BMW", "Mercedes", "Audi", "Volkswagen", "Hyundai" };
@@ -170,6 +216,7 @@ namespace AutoService
 
             return $"{brands[random.Next(brands.Length)]} {models[random.Next(models.Length)]}";
         }
+
         private void ShowCustomerInfo(Customer customer)
         {
             var brokenPart = availableParts.First(p => p.ID == customer.BrokenPartID);
@@ -179,6 +226,7 @@ namespace AutoService
             Console.WriteLine($"Стоимость ремонта: {customer.RepairCost}");
             Console.WriteLine($"На складе есть: {GetPartCount(customer.BrokenPartID)} шт.");
         }
+
         private void ProcessCustomerService(Customer customer)
         {
             Console.WriteLine("\nВаши действия:");
@@ -202,6 +250,7 @@ namespace AutoService
                     break;
             }
         }
+
         private void AcceptOrder(Customer customer)
         {
             var brokenPartID = customer.BrokenPartID;
@@ -219,12 +268,14 @@ namespace AutoService
                 ReplaceWithRandomPart(customer);
             }
         }
+
         private void RefuseOrder(Customer customer)
         {
             var penalty = customer.RepairCost * 0.2m; // 20% штраф
             warehouse.Balance -= penalty;
             Console.WriteLine($"Отказ в обслуживании. Штраф: {penalty}");
         }
+
         private void ReplaceWithRandomPart(Customer customer)
         {
             var availablePartIDs = warehouseParts.Where(wp => wp.Count > 0).Select(wp => wp.PartID).ToList();
@@ -246,6 +297,7 @@ namespace AutoService
                 Console.WriteLine("На складе нет деталей! Ремонт невозможен.");
             }
         }
+
         private void UsePart(int partID)
         {
             var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == partID);
@@ -254,11 +306,13 @@ namespace AutoService
                 warehousePart.Count--;
             }
         }
+
         private int GetPartCount(int partID)
         {
             var warehousePart = warehouseParts.FirstOrDefault(wp => wp.PartID == partID);
-            return warehousePart.Count;
+            return warehousePart?.Count ?? 0;
         }
+
         private void ShowPurchaseMenu()
         {
             Console.WriteLine("\nМеню закупки деталей");
@@ -322,6 +376,7 @@ namespace AutoService
                 Console.WriteLine("Неверный ввод!");
             }
         }
+
         private void ProcessPendingOrders()
         {
             for (int i = pendingOrders.Count - 1; i >= 0; i--)
@@ -353,6 +408,7 @@ namespace AutoService
                 }
             }
         }
+
         private void ShowWarehouseStatus()
         {
             Console.WriteLine($"\nБаланс: {warehouse.Balance}");
@@ -383,9 +439,9 @@ namespace AutoService
                     Console.WriteLine($"  {part.Name}: {order.Quantity} шт. (через {order.RemainingCars} машин)");
                 }
             }
-
         }
     }
+
     class Program
     {
         static void Main(string[] args)
