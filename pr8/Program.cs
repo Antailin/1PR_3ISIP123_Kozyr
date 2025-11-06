@@ -120,5 +120,22 @@ namespace pr8
                 }
             }
         }
+        static void ShowProducts(Users user = null)
+        {
+            Console.WriteLine("\nТовары");
+
+            var products = Core.Context.Products.ToList();
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("Товаров нет");
+                return;
+            }
+
+            foreach (var product in products)
+            {
+                Console.WriteLine($"{product.ProductId}. {product.ProductName} - {product.Price} руб. (осталось: {product.StockQuantity})");
+            }
+        }
     }
 }
