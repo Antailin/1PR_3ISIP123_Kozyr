@@ -300,5 +300,27 @@ namespace pr8
                 RemoveFromCart(user);
             }
         }
+        static void RemoveFromCart(Users user)
+        {
+            Console.Write("ID товара для удаления: ");
+            if (!int.TryParse(Console.ReadLine(), out int productId))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                return;
+            }
+
+            Cart item = Core.Context.Cart.FirstOrDefault(c => c.UserId == user.UserId && c.ProductId == productId);
+
+            if (item != null)
+            {
+                Core.Context.Cart.Remove(item);
+                Core.Context.SaveChanges();
+                Console.WriteLine("Товар удален из корзины!");
+            }
+            else
+            {
+                Console.WriteLine("Товар не найден в корзине!");
+            }
+        }
     }
 }
