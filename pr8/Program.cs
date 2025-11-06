@@ -151,5 +151,53 @@ namespace pr8
                 }
             }
         }
+        static void AddToCart(Users user)
+        {
+            Console.Write("ID товара: ");
+            if (!int.TryParse(Console.ReadLine(), out int productId))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                return;
+            }
+
+            Products product = Core.Context.Products.Find(productId);
+            if (product == null)
+            {
+                Console.WriteLine("Товар не найден!");
+                return;
+            }
+
+            Console.Write("Количество: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine("Неверное количество!");
+                return;
+            }
+
+            if (quantity > product.StockQuantity)
+            {
+                Console.WriteLine("Недостаточно товара!");
+                return;
+            }
+            Cart cartItem = Core.Context.Cart.FirstOrDefault(c => c.UserId == user.UserId && c.ProductId == productId);
+
+            if (cartItem != null)
+            {
+                cartItem.Quantity += quantity;
+            }
+            else
+            {
+                cartItem = new Cart
+                {
+                    UserId = user.UserId,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                Core.Context.Cart.Add(cartItem);
+            }
+
+            Core.Context.SaveChanges();
+            Console.WriteLine("Товар добавлен в корзину!");
+        }
     }
 }
