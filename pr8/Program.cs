@@ -33,5 +33,39 @@ namespace pr8
                 }
             }
         }
+        static void Register()
+        {
+            Console.WriteLine("\nРегистрация");
+
+            Console.Write("Логин: ");
+            string login = Console.ReadLine(); 
+            if (Core.Context.Users.Any(u => u.Username == login))
+            {
+                Console.WriteLine("Этот логин уже занят!");
+                return; 
+            }
+
+            Console.Write("Email: ");
+            string email = Console.ReadLine();
+
+            string password;
+            while (true) 
+            {
+                Console.Write("Пароль: ");
+                password = Console.ReadLine();
+
+                Console.Write("Повторите пароль: ");
+                string password2 = Console.ReadLine();
+
+                if (password == password2)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Пароли не совпадают! Попробуйте еще раз.");
+                }
+            }
+        }
     }
 }
