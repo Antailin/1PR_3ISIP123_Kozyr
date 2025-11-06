@@ -262,5 +262,30 @@ namespace pr8
             Console.WriteLine($"Товар: {product.ProductName} в количестве {quantity} шт.");
             Console.WriteLine($"Сумма: {total} руб.");
         }
+        static void ShowCart(Users user)
+        {
+            Console.WriteLine("\nКорзина");
+
+            var cartItems = from c in Core.Context.Cart
+                            join p in Core.Context.Products on c.ProductId equals p.ProductId
+                            where c.UserId == user.UserId
+                            select new { Cart = c, Product = p };
+
+            if (!cartItems.Any())
+            {
+                Console.WriteLine("Корзина пуста");
+                return;
+            }
+
+            decimal total = 0;
+
+            foreach (var item in cartItems)
+            {
+                decimal itemTotal = item.Cart.Quantity * item.Product.Price;
+                total += itemTotal;
+
+                Console.WriteLine($"{item.Product.ProductName} x{item.Cart.Quantity} = {itemTotal} руб.");
+            }
+        }
     }
 }
