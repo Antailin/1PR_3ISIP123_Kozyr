@@ -248,7 +248,19 @@ namespace pr8
                 Console.WriteLine("Ошибка ввода!");
                 return;
             }
-
+            OrderItems orderItem = new OrderItems
+            {
+                OrderId = order.OrderId,
+                ProductId = productId,
+                Quantity = quantity,
+                UnitPrice = product.Price
+            };
+            Core.Context.OrderItems.Add(orderItem);
+            product.StockQuantity -= quantity;
+            Core.Context.SaveChanges();
+            Console.WriteLine($"Заказ №{order.OrderId} оформлен!");
+            Console.WriteLine($"Товар: {product.ProductName} в количестве {quantity} шт.");
+            Console.WriteLine($"Сумма: {total} руб.");
         }
     }
 }
