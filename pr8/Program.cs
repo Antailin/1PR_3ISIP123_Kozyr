@@ -364,7 +364,26 @@ namespace pr8
 
             Core.Context.Orders.Add(order);
             Core.Context.SaveChanges();
+            
+            foreach (var item in cartItems)
+            {
+                OrderItems orderItem = new OrderItems
+                {
+                    OrderId = order.OrderId,
+                    ProductId = item.Product.ProductId,
+                    Quantity = item.Cart.Quantity,
+                    UnitPrice = item.Product.Price
+                };
 
+                Core.Context.OrderItems.Add(orderItem);
+                item.Product.StockQuantity -= item.Cart.Quantity;
+            }
+
+            var userCart = Core.Context.Cart.Where(c => c.UserId == user.UserId).ToList();
+            Core.Context.Cart.RemoveRange(userCart);
+            Core.Context.SaveChanges();
+            Console.WriteLine($"Заказ №{order.OrderId} оформлен!");
+            Console.WriteLine($"Сумма: {total} руб.");
         }
     }
 }
