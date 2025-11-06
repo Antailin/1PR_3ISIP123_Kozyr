@@ -87,6 +87,28 @@ namespace pr8
 
             Console.Write("Пароль: ");
             string password = Console.ReadLine();
+            Users user = Core.Context.Users.FirstOrDefault(u => u.Username == login);
+            if (user != null && password == user.PasswordHash)
+            {
+                Console.WriteLine($"Добро пожаловать, {user.Username}!");
+                UserMenu(user);
+            }
+            else
+            {
+                Console.WriteLine("Неверный логин или пароль!");
+            }
+        }
+        static void UserMenu(Users user)
+        {
+            while (true) 
+            {
+                Console.WriteLine("\n--- Личный кабинет ---");
+                Console.WriteLine("1 - Товары");
+                Console.WriteLine("2 - Корзина");
+                Console.WriteLine("3 - Мои заказы");
+                Console.WriteLine("4 - Выйти");
+                Console.Write("Ваш выбор: ");
+            }
         }
     }
 }
