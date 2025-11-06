@@ -38,18 +38,18 @@ namespace pr8
             Console.WriteLine("\nРегистрация");
 
             Console.Write("Логин: ");
-            string login = Console.ReadLine(); 
+            string login = Console.ReadLine();
             if (Core.Context.Users.Any(u => u.Username == login))
             {
                 Console.WriteLine("Этот логин уже занят!");
-                return; 
+                return;
             }
 
             Console.Write("Email: ");
             string email = Console.ReadLine();
 
             string password;
-            while (true) 
+            while (true)
             {
                 Console.Write("Пароль: ");
                 password = Console.ReadLine();
@@ -77,6 +77,16 @@ namespace pr8
             Core.Context.SaveChanges();
 
             Console.WriteLine("Регистрация успешна!");
+        }
+        static void Login()
+        {
+            Console.WriteLine("\nВход");
+
+            Console.Write("Логин: ");
+            string login = Console.ReadLine();
+
+            Console.Write("Пароль: ");
+            string password = Console.ReadLine();
         }
     }
 }
