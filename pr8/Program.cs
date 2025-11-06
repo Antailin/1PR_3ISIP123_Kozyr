@@ -199,5 +199,56 @@ namespace pr8
             Core.Context.SaveChanges();
             Console.WriteLine("Товар добавлен в корзину!");
         }
+        static void BuyProduct(Users user)
+        {
+            Console.Write("ID товара: ");
+            if (!int.TryParse(Console.ReadLine(), out int productId))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                return;
+            }
+
+            Products product = Core.Context.Products.Find(productId);
+            if (product == null)
+            {
+                Console.WriteLine("Товар не найден!");
+                return;
+            }
+
+            Console.Write("Количество: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine("Неверное количество!");
+                return;
+            }
+
+            if (quantity > product.StockQuantity)
+            {
+                Console.WriteLine("Недостаточно товара!");
+                return;
+            }
+
+            var points = Core.Context.PickupPoints.ToList();
+
+            if (points.Count == 0)
+            {
+                Console.WriteLine("Нет пунктов выдачи!");
+                return;
+            }
+
+            Console.WriteLine("Пункты выдачи:");
+            foreach (var point in points)
+            {
+                Console.WriteLine($"{point.PickupPointId}. {point.PointName} - {point.Address}");
+            }
+
+            Console.Write("Выберите пункт выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pointId))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                return;
+            }
+
+        }
     }
 }
