@@ -108,6 +108,16 @@ namespace pr8
                 Console.WriteLine("3 - Мои заказы");
                 Console.WriteLine("4 - Выйти");
                 Console.Write("Ваш выбор: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1": ShowProducts(user); break;
+                    case "2": ShowCart(user); break;      
+                    case "3": ShowOrders(user); break;    
+                    case "4": return;                    
+                    default: Console.WriteLine("Неверный выбор!"); break;
+                }
             }
         }
     }
