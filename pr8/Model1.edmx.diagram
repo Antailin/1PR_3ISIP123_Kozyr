@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="939b8445e1ef4c27a894ca2b5a03af20" Name="Diagram1">
+        <EntityTypeShape EntityType="PR_8_GordovModel.Cart" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.OrderItems" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.Orders" Width="1.5" PointX="6" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.PickupPoints" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.Products" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR_8_GordovModel.Users" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__Cart__ProductId__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__Cart__UserId__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__OrderItem__Order__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__OrderItem__Produ__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__Orders__PickupPo__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="PR_8_GordovModel.FK__Orders__UserId__4CA06362" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
