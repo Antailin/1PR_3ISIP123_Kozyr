@@ -66,6 +66,17 @@ namespace pr8
                     Console.WriteLine("Пароли не совпадают! Попробуйте еще раз.");
                 }
             }
+            Users newUser = new Users
+            {
+                Username = login,
+                Email = email,
+                PasswordHash = password,
+                PhoneNumber = ""
+            };
+            Core.Context.Users.Add(newUser);
+            Core.Context.SaveChanges();
+
+            Console.WriteLine("Регистрация успешна!");
         }
     }
 }
