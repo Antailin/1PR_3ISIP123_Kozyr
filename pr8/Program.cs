@@ -71,7 +71,6 @@ namespace pr8
                 Username = login,
                 Email = email,
                 PasswordHash = password,
-                PhoneNumber = ""
             };
             Core.Context.Users.Add(newUser);
             Core.Context.SaveChanges();
@@ -135,6 +134,21 @@ namespace pr8
             foreach (var product in products)
             {
                 Console.WriteLine($"{product.ProductId}. {product.ProductName} - {product.Price} руб. (осталось: {product.StockQuantity})");
+            }
+
+            if (user != null)
+            {
+                Console.Write("\n1 - Добавить в корзину\n2 - Купить сразу\n3 - Назад\nВаш выбор: ");
+                string choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    AddToCart(user);
+                }
+                else if (choice == "2")
+                {
+                    BuyProduct(user);
+                }
             }
         }
     }
