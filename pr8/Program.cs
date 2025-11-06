@@ -286,6 +286,19 @@ namespace pr8
 
                 Console.WriteLine($"{item.Product.ProductName} x{item.Cart.Quantity} = {itemTotal} руб.");
             }
+            Console.WriteLine($"Итого: {total} руб.");
+
+            Console.Write("\n1 - Оформить заказ\n2 - Удалить товар\n3 - Назад\nВаш выбор: ");
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                CreateOrder(user);
+            }
+            else if (choice == "2")
+            {
+                RemoveFromCart(user);
+            }
         }
     }
 }
