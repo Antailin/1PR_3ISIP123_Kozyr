@@ -322,5 +322,49 @@ namespace pr8
                 Console.WriteLine("Товар не найден в корзине!");
             }
         }
+        static void CreateOrder(Users user)
+        {
+            Console.WriteLine("\nОформление заказа");
+
+            var points = Core.Context.PickupPoints.ToList();
+
+            if (points.Count == 0)
+            {
+                Console.WriteLine("Нет пунктов выдачи!");
+                return;
+            }
+
+            Console.WriteLine("Пункты выдачи:");
+            foreach (var point in points)
+            {
+                Console.WriteLine($"{point.PickupPointId}. {point.PointName} - {point.Address}");
+            }
+
+            Console.Write("Выберите пункт выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pointId))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                return;
+            }
+
+            var cartItems = from c in Core.Context.Cart
+                            join p in Core.Context.Products on c.ProductId equals p.ProductId
+                            where c.UserId == user.UserId
+                            select new { Cart = c, Product = p };
+
+            decimal total = cartItems.Sum(item => item.Cart.Quantity * item.Product.Price);
+
+            Orders order = new Orders
+            {
+                UserId = user.UserId,
+                PickupPointId = pointId,
+                OrderDate = DateTime.Now,
+                TotalAmount = total
+            };
+
+            Core.Context.Orders.Add(order);
+            Core.Context.SaveChanges();
+
+        }
     }
 }
