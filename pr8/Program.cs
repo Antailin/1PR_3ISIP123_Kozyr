@@ -248,6 +248,14 @@ namespace pr8
                 Console.WriteLine("Ошибка ввода!");
                 return;
             }
+            decimal total = quantity * product.Price;
+            Orders order = new Orders
+            {
+                UserId = user.UserId,
+                PickupPointId = pointId,
+                OrderDate = DateTime.Now,
+                TotalAmount = total
+            };
             OrderItems orderItem = new OrderItems
             {
                 OrderId = order.OrderId,
@@ -384,6 +392,40 @@ namespace pr8
             Core.Context.SaveChanges();
             Console.WriteLine($"Заказ №{order.OrderId} оформлен!");
             Console.WriteLine($"Сумма: {total} руб.");
+        }
+        static void ShowOrders(Users user)
+        {
+            Console.WriteLine("\nМои заказы");
+
+            var orders = from o in Core.Context.Orders
+                         join p in Core.Context.PickupPoints on o.PickupPointId equals p.PickupPointId
+                         where o.UserId == user.UserId
+                         orderby o.OrderDate descending
+                         select new { Order = o, Point = p };
+
+            if (!orders.Any())
+            {
+                Console.WriteLine("Заказов нет");
+                return;
+            }
+
+            foreach (var orderInfo in orders)
+            {
+                Console.WriteLine($"Заказ №{orderInfo.Order.OrderId} от {orderInfo.Order.OrderDate:dd.MM.yyyy}");
+                Console.WriteLine($"Сумма: {orderInfo.Order.TotalAmount} руб.");
+                Console.WriteLine($"Пункт выдачи: {orderInfo.Point.PointName}");
+
+                var items = from oi in Core.Context.OrderItems
+                            join p in Core.Context.Products on oi.ProductId equals p.ProductId
+                            where oi.OrderId == orderInfo.Order.OrderId
+                            select new { Item = oi, Product = p };
+
+                foreach (var item in items)
+                {
+                    Console.WriteLine($"  - {item.Product.ProductName} x{item.Item.Quantity}");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
