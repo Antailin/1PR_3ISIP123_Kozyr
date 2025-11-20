@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _1PR_3ISIP123_Kozyr.Model
 {
-    internal class Enemy
+    public class Enemy
     {
         public string Name { get; set; }
         public int MaxHP { get; set; }
